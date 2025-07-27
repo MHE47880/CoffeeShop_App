@@ -141,7 +141,7 @@ fun WelcomeScreen() {
                         modifier = Modifier
                             .padding(horizontal = 26.dp, vertical = 30.dp)
                             .fillMaxWidth()
-                            .height(50.dp)
+                            .height(60.dp)
                         ,
                         colors = ButtonDefaults.buttonColors(containerColor = CreamyBrown),
                         shape = RoundedCornerShape(18.dp),
