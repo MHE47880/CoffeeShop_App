@@ -1,4 +1,4 @@
-package ir.mhe47880.coffeeshopapp.ui.screens
+package ir.mhe47880.coffeeshopapp.ui.navigation.appnav.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -26,25 +26,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import androidx.navigation.NavHostController
 import ir.mhe47880.coffeeshopapp.R
 import ir.mhe47880.coffeeshopapp.ui.theme.CreamyBrown
 import ir.mhe47880.coffeeshopapp.ui.theme.White
 import ir.mhe47880.coffeeshopapp.ui.theme.soraFont
 
-
-@Preview(
-    device = Devices.PIXEL_5,
-    showSystemUi = true,
-)
 @Composable
-fun WelcomeScreen() {
+fun WelcomeScreen(navController: NavHostController) {
 
     Box(
         modifier = Modifier
@@ -146,6 +140,11 @@ fun WelcomeScreen() {
                         colors = ButtonDefaults.buttonColors(containerColor = CreamyBrown),
                         shape = RoundedCornerShape(18.dp),
                         onClick = {
+                            navController.navigate(Screens.MainScreen.route){
+                                popUpTo(Screens.WelcomeScreen.route){
+                                    inclusive = true
+                                }
+                            }
                         }
                     )
                     {

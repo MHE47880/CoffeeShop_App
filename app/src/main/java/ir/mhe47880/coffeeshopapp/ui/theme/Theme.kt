@@ -15,6 +15,7 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 private val LightColorScheme = lightColorScheme(
+    primary = White
 
 
     /* Other default colors to override

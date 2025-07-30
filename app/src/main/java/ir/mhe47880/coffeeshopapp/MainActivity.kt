@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.view.WindowCompat
-import ir.mhe47880.coffeeshopapp.ui.screens.SetupNavigation
+import ir.mhe47880.coffeeshopapp.ui.navigation.appnav.SetupNavigation
 import ir.mhe47880.coffeeshopapp.ui.theme.CoffeeShopAppTheme
 
 class MainActivity : ComponentActivity() {
