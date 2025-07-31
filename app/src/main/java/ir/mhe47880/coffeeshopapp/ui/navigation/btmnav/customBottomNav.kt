@@ -47,7 +47,8 @@ fun CustomBottomNav(
                     IconButton(
                         onClick = {
                             navController.navigate(screen.route) {
-                                popUpTo(screen.route)
+                                popUpTo(navController.graph.startDestinationId)
+                                launchSingleTop = true
                             }
                         }
                     ) {
