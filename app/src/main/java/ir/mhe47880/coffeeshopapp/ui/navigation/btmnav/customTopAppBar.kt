@@ -1,15 +1,19 @@
 package ir.mhe47880.coffeeshopapp.ui.navigation.btmnav
 
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -31,10 +35,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.ConstraintSet
-import androidx.constraintlayout.compose.layoutId
 import ir.mhe47880.coffeeshopapp.R
+import ir.mhe47880.coffeeshopapp.ui.navigation.btmnav.screens.utils.DpValues
+import ir.mhe47880.coffeeshopapp.ui.navigation.btmnav.screens.utils.isScrolled
 import ir.mhe47880.coffeeshopapp.ui.theme.Black_Dark
 import ir.mhe47880.coffeeshopapp.ui.theme.Black_Gray
 import ir.mhe47880.coffeeshopapp.ui.theme.Dark_Gray
@@ -43,43 +46,21 @@ import ir.mhe47880.coffeeshopapp.ui.theme.White
 import ir.mhe47880.coffeeshopapp.ui.theme.soraFont
 
 @Composable
-fun CustomTopAppBar() {
+fun CustomTopAppBar(lazyGridState: LazyGridState) {
 
     var textFieldState by remember { mutableStateOf("") }
 
-    val constraintSet = ConstraintSet {
-
-        val topbar = createRefFor("TopAppBar")
-        val banner = createRefFor("Banner")
-        val searchRow = createRefFor("SearchRow")
-
-        constrain(topbar) {
-            top.linkTo(parent.top)
-            start.linkTo(parent.start)
-            end.linkTo(parent.end)
-        }
-
-        constrain(banner) {
-            top.linkTo(topbar.bottom)
-            bottom.linkTo(topbar.bottom)
-            start.linkTo(topbar.start)
-            end.linkTo(topbar.end)
-        }
-
-        constrain(searchRow) {
-            top.linkTo(parent.top)
-            bottom.linkTo(banner.top)
-            start.linkTo(parent.start)
-            end.linkTo(parent.end)
-        }
-    }
-
-    ConstraintLayout(
-        constraintSet = constraintSet
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(White)
+            .animateContentSize(animationSpec = tween(durationMillis = 300))
+            .height(height = if (lazyGridState.isScrolled) 0.dp else DpValues.TOP_APP_BAR_HEIGHT)
     ) {
+
+        //Background Gradiant
         Box(
             modifier = Modifier
-                .layoutId("TopAppBar")
                 .fillMaxWidth()
                 .sizeIn(maxHeight = 250.dp)
                 .height(200.dp)
@@ -95,87 +76,89 @@ fun CustomTopAppBar() {
                 )
         ) {}
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp)
-                .layoutId("SearchRow"),
-            horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically
+        Column(
+            modifier = Modifier.height(DpValues.TOP_APP_BAR_HEIGHT),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
-
-            Box(
+            Row(
                 modifier = Modifier
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(
-                        Brush.linearGradient(
-                            colors = listOf(
-                                Black_Dark,
-                                Dark_Gray,
-                            )
-                        )
-                    ),
-                contentAlignment = Alignment.Center
+                    .fillMaxWidth()
+                    .padding(start = 20.dp, end = 20.dp, top = 25.dp),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                TextField(
-                    modifier = Modifier.width(275.dp),
-                    value = textFieldState,
-                    onValueChange = {
-                        if (it.length <= 17)
-                            textFieldState = it
-                    },
-                    singleLine = true,
-                    shape = RoundedCornerShape(16.dp),
-                    prefix = {
-                        Icon(
-                            modifier = Modifier.padding(end = 8.dp),
-                            painter = painterResource(R.drawable.ic_search),
-                            contentDescription = null
-                        )
-                    },
-                    placeholder = {
-                        Text(
-                            text = "Search Coffee",
-                            style = TextStyle(
-                                color = LightGray,
-                                fontFamily = soraFont,
-                                fontWeight = FontWeight.Normal,
-                                fontSize = 14.sp
+
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(
+                            Brush.linearGradient(
+                                colors = listOf(
+                                    Black_Dark,
+                                    Dark_Gray,
+                                )
                             )
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    TextField(
+                        modifier = Modifier.width(275.dp),
+                        value = textFieldState,
+                        onValueChange = {
+                            if (it.length <= 17)
+                                textFieldState = it
+                        },
+                        singleLine = true,
+                        shape = RoundedCornerShape(16.dp),
+                        prefix = {
+                            Icon(
+                                modifier = Modifier.padding(end = 8.dp),
+                                painter = painterResource(R.drawable.ic_search),
+                                contentDescription = null
+                            )
+                        },
+                        placeholder = {
+                            Text(
+                                text = "Search Coffee",
+                                style = TextStyle(
+                                    color = LightGray,
+                                    fontFamily = soraFont,
+                                    fontWeight = FontWeight.Normal,
+                                    fontSize = 14.sp
+                                )
+                            )
+                        },
+                        colors = TextFieldDefaults.colors(
+                            unfocusedContainerColor = Color.Transparent,
+                            focusedContainerColor = Color.Transparent,
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent,
+                            focusedTextColor = White,
+                            unfocusedTextColor = White
                         )
-                    },
-                    colors = TextFieldDefaults.colors(
-                        unfocusedContainerColor = Color.Transparent,
-                        focusedContainerColor = Color.Transparent,
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                        focusedTextColor = White,
-                        unfocusedTextColor = White
                     )
-                )
+                }
+
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.CenterEnd
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_settings),
+                        contentDescription = null,
+                        tint = Color.Unspecified
+                    )
+                }
             }
 
-            Box(
-                modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.CenterEnd
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_settings),
-                    contentDescription = null,
-                    tint = Color.Unspecified
+            Box {
+                Image(
+                    modifier = Modifier.padding(horizontal = 20.dp),
+                    painter = painterResource(R.drawable.banner),
+                    contentDescription = null
                 )
             }
-        }
-
-        Box(
-            modifier = Modifier
-                .layoutId("Banner"),
-        ) {
-            Image(
-                modifier = Modifier.padding(horizontal = 20.dp),
-                painter = painterResource(R.drawable.banner),
-                contentDescription = null
-            )
         }
     }
 
