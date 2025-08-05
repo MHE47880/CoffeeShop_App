@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ir.mhe47880.coffeeshopapp.R
 import ir.mhe47880.coffeeshopapp.ui.navigation.btmnav.screens.utils.DpValues
+import ir.mhe47880.coffeeshopapp.ui.navigation.btmnav.screens.utils.dynamicTopAppBarHeight
 import ir.mhe47880.coffeeshopapp.ui.navigation.btmnav.screens.utils.isScrolled
 import ir.mhe47880.coffeeshopapp.ui.theme.Black_Dark
 import ir.mhe47880.coffeeshopapp.ui.theme.Black_Gray
@@ -49,13 +50,16 @@ import ir.mhe47880.coffeeshopapp.ui.theme.soraFont
 fun CustomTopAppBar(lazyGridState: LazyGridState) {
 
     var textFieldState by remember { mutableStateOf("") }
+    val topAppBarHeight by remember { mutableStateOf(DpValues.TOP_APP_BAR_HEIGHT) }
+
+    dynamicTopAppBarHeight(state = lazyGridState)
 
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .background(White)
-            .animateContentSize(animationSpec = tween(durationMillis = 300))
-            .height(height = if (lazyGridState.isScrolled) 0.dp else DpValues.TOP_APP_BAR_HEIGHT)
+            .animateContentSize(animationSpec = tween(durationMillis = 400))
+            .height(height = if (lazyGridState.isScrolled) topAppBarHeight else DpValues.TOP_APP_BAR_HEIGHT)
     ) {
 
         //Background Gradiant

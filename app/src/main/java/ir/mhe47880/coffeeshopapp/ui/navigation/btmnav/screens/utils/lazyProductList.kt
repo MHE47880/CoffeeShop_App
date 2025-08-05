@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -22,7 +21,7 @@ fun LazyProductList(lazyGridState: LazyGridState) {
 
     val padding by animateDpAsState(
         targetValue = if (lazyGridState.isScrolled) 0.dp else DpValues.TOP_APP_BAR_HEIGHT,
-        animationSpec = tween(durationMillis = 700)
+        animationSpec = tween(durationMillis = 400)
     )
 
     LazyVerticalGrid(
