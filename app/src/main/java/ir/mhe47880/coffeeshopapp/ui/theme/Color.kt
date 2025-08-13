@@ -4,6 +4,7 @@ import androidx.compose.ui.graphics.Color
 
 val White = Color(0xFFFFFFFF)
 val LightGray = Color(0xFFA2A2A2)
+val LightestGray = Color(0xFFE3E3E3)
 val Black_Darkest = Color(0xFF000000)
 
 val Dark_Gray = Color(0xFF2A2A2A)

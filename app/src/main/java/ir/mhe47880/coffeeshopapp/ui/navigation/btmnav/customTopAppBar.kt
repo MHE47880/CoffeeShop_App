@@ -20,10 +20,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,9 +33,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import ir.mhe47880.coffeeshopapp.R
-import ir.mhe47880.coffeeshopapp.ui.navigation.btmnav.screens.utils.DpValues
-import ir.mhe47880.coffeeshopapp.ui.navigation.btmnav.screens.utils.dynamicTopAppBarHeight
 import ir.mhe47880.coffeeshopapp.ui.navigation.btmnav.screens.utils.isScrolled
 import ir.mhe47880.coffeeshopapp.ui.theme.Black_Dark
 import ir.mhe47880.coffeeshopapp.ui.theme.Black_Gray
@@ -45,21 +42,28 @@ import ir.mhe47880.coffeeshopapp.ui.theme.Dark_Gray
 import ir.mhe47880.coffeeshopapp.ui.theme.LightGray
 import ir.mhe47880.coffeeshopapp.ui.theme.White
 import ir.mhe47880.coffeeshopapp.ui.theme.soraFont
+import ir.mhe47880.coffeeshopapp.viewmodel.CustomTopAppBarViewModel
+import ir.mhe47880.coffeeshopapp.viewmodel.CustomTopAppBarViewModel.Companion.TOP_APP_BAR_HEIGHT
+import ir.mhe47880.coffeeshopapp.viewmodel.CustomTopAppBarViewModel.Companion.textFieldValue
 
 @Composable
-fun CustomTopAppBar(lazyGridState: LazyGridState) {
+fun CustomTopAppBar(
+    lazyGridState: LazyGridState,
+    viewModel: CustomTopAppBarViewModel = hiltViewModel()
+) {
 
-    var textFieldState by remember { mutableStateOf("") }
-    val topAppBarHeight by remember { mutableStateOf(DpValues.TOP_APP_BAR_HEIGHT) }
+    val topAppBarHeight by viewModel.topAppBarHeight.collectAsState()
 
-    dynamicTopAppBarHeight(state = lazyGridState)
+    var textFieldState = textFieldValue
+
+    viewModel.dynamicTopAppBarHeight(state = lazyGridState)
 
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .background(White)
             .animateContentSize(animationSpec = tween(durationMillis = 400))
-            .height(height = if (lazyGridState.isScrolled) topAppBarHeight else DpValues.TOP_APP_BAR_HEIGHT)
+            .height(height = if (lazyGridState.isScrolled) topAppBarHeight else TOP_APP_BAR_HEIGHT)
     ) {
 
         //Background Gradiant
@@ -80,8 +84,9 @@ fun CustomTopAppBar(lazyGridState: LazyGridState) {
                 )
         ) {}
 
+        //SearchBox & SettingsIcon
         Column(
-            modifier = Modifier.height(DpValues.TOP_APP_BAR_HEIGHT),
+            modifier = Modifier.height(TOP_APP_BAR_HEIGHT),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
@@ -156,6 +161,7 @@ fun CustomTopAppBar(lazyGridState: LazyGridState) {
                 }
             }
 
+            //Bottom Banner
             Box {
                 Image(
                     modifier = Modifier.padding(horizontal = 20.dp),

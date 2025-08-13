@@ -2,4 +2,8 @@
     <string name="app_name">CoffeeShopApp</string>
     <string name="fall_in_love">Fall in Love with Coffee in Blissful Delight!</string>
     <string name="welcome_text">Welcome to our cozy coffee corner, where every cup is a delightful for you.</string>
+    <string name="order">Order</string>
+    <string name="delivery_address">Delivery Address : </string>
+    <string name="address_title">Jl. Kpg Sutoyo</string>
+    <string name="address_description">Kpg. Sutoyo No. 620, Bilzen, Tanjungbalai.</string>
 </resources>

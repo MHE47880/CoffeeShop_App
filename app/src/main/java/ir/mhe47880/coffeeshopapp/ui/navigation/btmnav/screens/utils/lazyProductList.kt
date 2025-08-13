@@ -13,14 +13,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import ir.mhe47880.coffeeshopapp.model.local.utils.FakeCoffeeData
 import ir.mhe47880.coffeeshopapp.ui.theme.White
+import ir.mhe47880.coffeeshopapp.viewmodel.CustomTopAppBarViewModel.Companion.TOP_APP_BAR_HEIGHT
+import ir.mhe47880.coffeeshopapp.viewmodel.LazyProductListViewModel
 
 @Composable
-fun LazyProductList(lazyGridState: LazyGridState) {
+fun LazyProductList(
+    lazyGridState: LazyGridState,
+    viewModel: LazyProductListViewModel = hiltViewModel()
+) {
 
     val padding by animateDpAsState(
-        targetValue = if (lazyGridState.isScrolled) 0.dp else DpValues.TOP_APP_BAR_HEIGHT,
+        targetValue =
+            if (lazyGridState.isScrolled) 0.dp else TOP_APP_BAR_HEIGHT,
         animationSpec = tween(durationMillis = 400)
     )
 
@@ -29,20 +36,26 @@ fun LazyProductList(lazyGridState: LazyGridState) {
             .padding(top = padding)
             .background(White),
         state = lazyGridState,
-        columns = GridCells.Fixed(2),
+        columns = GridCells.Fixed(viewModel.columnCount),
         overscrollEffect = null
     ) {
 
-        items(count = 2){ Spacer(Modifier.height(25.dp)) }
+        if (viewModel.checkItems) {
+            items(count = 2) { Spacer(Modifier.height(25.dp)) }
 
-        items(
-            count = FakeCoffeeData.coffeeDataList.size,
-            key = { index -> FakeCoffeeData.coffeeDataList[index].id }
-        ) {
-            ProductCard(
-                productList = FakeCoffeeData.coffeeDataList,
-                index = it
-            )
+            items(
+                count = viewModel.getFilteredItems().size,
+                key = { index -> FakeCoffeeData.coffeeDataList[index].id }
+            ) {
+                ProductCard(
+                    productList = viewModel.getFilteredItems(),
+                    index = it
+                )
+            }
+        } else {
+            item {
+                NoProductFound()
+            }
         }
 
     }

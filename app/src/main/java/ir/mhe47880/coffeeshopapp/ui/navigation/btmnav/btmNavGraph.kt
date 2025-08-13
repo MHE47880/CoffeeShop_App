@@ -12,6 +12,8 @@ import androidx.navigation.compose.rememberNavController
 import ir.mhe47880.coffeeshopapp.ui.navigation.btmnav.screens.BottomNavScreens
 import ir.mhe47880.coffeeshopapp.ui.navigation.btmnav.screens.HomeScreen
 import ir.mhe47880.coffeeshopapp.ui.navigation.btmnav.screens.ShoppingCartScreen
+import ir.mhe47880.coffeeshopapp.viewmodel.CustomTopAppBarViewModel
+import ir.mhe47880.coffeeshopapp.viewmodel.LazyProductListViewModel
 
 @Composable
 fun SetupBottomNavigation() {

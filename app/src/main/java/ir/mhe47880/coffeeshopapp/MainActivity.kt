@@ -4,9 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.view.WindowCompat
+import dagger.hilt.android.AndroidEntryPoint
 import ir.mhe47880.coffeeshopapp.ui.navigation.appnav.SetupNavigation
 import ir.mhe47880.coffeeshopapp.ui.theme.CoffeeShopAppTheme
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

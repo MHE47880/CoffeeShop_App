@@ -11,6 +11,8 @@ import androidx.compose.ui.Modifier
 import ir.mhe47880.coffeeshopapp.ui.navigation.btmnav.CustomTopAppBar
 import ir.mhe47880.coffeeshopapp.ui.navigation.btmnav.screens.utils.LazyProductList
 import ir.mhe47880.coffeeshopapp.ui.theme.White
+import ir.mhe47880.coffeeshopapp.viewmodel.CustomTopAppBarViewModel
+import ir.mhe47880.coffeeshopapp.viewmodel.LazyProductListViewModel
 
 @Composable
 fun HomeScreen() {

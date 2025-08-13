@@ -1,6 +1,7 @@
 package ir.mhe47880.coffeeshopapp.ui.navigation.btmnav.screens.utils
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,6 +29,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import ir.mhe47880.coffeeshopapp.R
 import ir.mhe47880.coffeeshopapp.model.local.CoffeeInfo
 import ir.mhe47880.coffeeshopapp.ui.theme.Black_Darkest
@@ -35,11 +37,13 @@ import ir.mhe47880.coffeeshopapp.ui.theme.LightGray
 import ir.mhe47880.coffeeshopapp.ui.theme.White
 import ir.mhe47880.coffeeshopapp.ui.theme.Yellow
 import ir.mhe47880.coffeeshopapp.ui.theme.soraFont
+import ir.mhe47880.coffeeshopapp.viewmodel.PublicProductListViewModel
 
 @Composable
 fun ProductCard(
     productList: List<CoffeeInfo>,
-    index: Int
+    index: Int,
+    viewModel: PublicProductListViewModel = hiltViewModel()
 ) {
 
     Card(
@@ -164,6 +168,14 @@ fun ProductCard(
                 ) {
 
                     Icon(
+                        modifier = Modifier.clickable {
+                            if (viewModel.getShoppingCartProductList().contains(productList[index]))
+                                viewModel.increaseCount(productList[index])
+                            else {
+                                viewModel.increaseCount(productList[index])
+                                viewModel.addToShoppingCartProductList(productList[index])
+                            }
+                        },
                         painter = painterResource(R.drawable.ic_plus),
                         contentDescription = null,
                         tint = Color.Unspecified
