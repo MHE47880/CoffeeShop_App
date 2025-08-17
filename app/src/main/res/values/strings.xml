@@ -6,4 +6,7 @@
     <string name="delivery_address">Delivery Address : </string>
     <string name="address_title">Jl. Kpg Sutoyo</string>
     <string name="address_description">Kpg. Sutoyo No. 620, Bilzen, Tanjungbalai.</string>
+    <string name="payment_summary">Payment Summary</string>
+    <string name="total_price">Total Price</string>
+    <string name="delivery_fee">Delivery Fee</string>
 </resources>

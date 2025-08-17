@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ir.mhe47880.coffeeshopapp.R
 import ir.mhe47880.coffeeshopapp.model.local.CoffeeInfo
-import ir.mhe47880.coffeeshopapp.ui.theme.Black_Darkest
+import ir.mhe47880.coffeeshopapp.ui.theme.BlackDarkest
 import ir.mhe47880.coffeeshopapp.ui.theme.LightGray
 import ir.mhe47880.coffeeshopapp.ui.theme.White
 import ir.mhe47880.coffeeshopapp.ui.theme.Yellow
@@ -118,7 +118,7 @@ fun ProductCard(
                     .padding(start = 8.dp),
                 text = productList[index].name,
                 style = TextStyle(
-                    color = Black_Darkest,
+                    color = BlackDarkest,
                     fontSize = 16.sp,
                     fontFamily = soraFont,
                     fontWeight = FontWeight.SemiBold
@@ -154,7 +154,7 @@ fun ProductCard(
                 Text(
                     text = "$ ${productList[index].price}",
                     style = TextStyle(
-                        color = Black_Darkest,
+                        color = BlackDarkest,
                         fontSize = 18.sp,
                         fontFamily = soraFont,
                         fontWeight = FontWeight.SemiBold

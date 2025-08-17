@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ir.mhe47880.coffeeshopapp.R
-import ir.mhe47880.coffeeshopapp.ui.theme.Black_Darkest
+import ir.mhe47880.coffeeshopapp.ui.theme.BlackDarkest
 import ir.mhe47880.coffeeshopapp.ui.theme.LightGray
 import ir.mhe47880.coffeeshopapp.ui.theme.soraFont
 import ir.mhe47880.coffeeshopapp.viewmodel.PublicProductListViewModel
@@ -73,7 +73,7 @@ fun ProductShoppingList(
                 modifier = Modifier.sizeIn(maxWidth = 120.dp),
                 text = itemsList[index].name,
                 style = TextStyle(
-                    color = Black_Darkest,
+                    color = BlackDarkest,
                     fontFamily = soraFont,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 16.sp
@@ -113,7 +113,9 @@ fun ProductShoppingList(
                     .clickable(
                         enabled = countState > 1,
                         onClick = {
+                            viewModel.decreaseCount(itemsList[index])
                             countState--
+                            viewModel.updateTotalPrice()
                         }
                     ),
                 painter = painterResource(
@@ -127,7 +129,7 @@ fun ProductShoppingList(
                 modifier = Modifier.padding(horizontal = 10.dp),
                 text = countState.toString(),
                 style = TextStyle(
-                    color = Black_Darkest,
+                    color = BlackDarkest,
                     fontFamily = soraFont,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 14.sp
@@ -138,7 +140,9 @@ fun ProductShoppingList(
                 modifier = Modifier
                     .clip(CircleShape)
                     .clickable {
+                        viewModel.increaseCount(itemsList[index])
                         countState++
+                        viewModel.updateTotalPrice()
                     },
                 painter = painterResource(R.drawable.ic_plus_2_enable),
                 contentDescription = null,

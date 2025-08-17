@@ -22,6 +22,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -42,19 +43,18 @@ import ir.mhe47880.coffeeshopapp.ui.theme.Dark_Gray
 import ir.mhe47880.coffeeshopapp.ui.theme.LightGray
 import ir.mhe47880.coffeeshopapp.ui.theme.White
 import ir.mhe47880.coffeeshopapp.ui.theme.soraFont
-import ir.mhe47880.coffeeshopapp.viewmodel.CustomTopAppBarViewModel
-import ir.mhe47880.coffeeshopapp.viewmodel.CustomTopAppBarViewModel.Companion.TOP_APP_BAR_HEIGHT
-import ir.mhe47880.coffeeshopapp.viewmodel.CustomTopAppBarViewModel.Companion.textFieldValue
+import ir.mhe47880.coffeeshopapp.viewmodel.HomeScreenViewModel
+import ir.mhe47880.coffeeshopapp.viewmodel.HomeScreenViewModel.Companion.TOP_APP_BAR_HEIGHT
 
 @Composable
 fun CustomTopAppBar(
     lazyGridState: LazyGridState,
-    viewModel: CustomTopAppBarViewModel = hiltViewModel()
+    viewModel: HomeScreenViewModel = hiltViewModel()
 ) {
 
     val topAppBarHeight by viewModel.topAppBarHeight.collectAsState()
 
-    var textFieldState = textFieldValue
+    val textFieldState by viewModel.textFieldValue.collectAsState()
 
     viewModel.dynamicTopAppBarHeight(state = lazyGridState)
 
@@ -115,8 +115,9 @@ fun CustomTopAppBar(
                         modifier = Modifier.width(275.dp),
                         value = textFieldState,
                         onValueChange = {
-                            if (it.length <= 17)
-                                textFieldState = it
+                            if (it.length <= 17) {
+                                viewModel.updateTextFieldValue(it)
+                            }
                         },
                         singleLine = true,
                         shape = RoundedCornerShape(16.dp),
