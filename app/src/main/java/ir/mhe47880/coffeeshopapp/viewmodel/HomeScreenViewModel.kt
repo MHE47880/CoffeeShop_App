@@ -1,8 +1,6 @@
 package ir.mhe47880.coffeeshopapp.viewmodel
 
 import androidx.compose.foundation.lazy.grid.LazyGridState
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
@@ -26,7 +24,7 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
     private var _textFieldState = MutableStateFlow("")
     val textFieldValue: StateFlow<String> = _textFieldState
 
-    val getFilteredItems =
+    private val getFilteredItems =
         FakeCoffeeData.coffeeDataList.filter {
             it.name.trim().lowercase().contains(textFieldValue.value.trim().lowercase())
         }
@@ -34,10 +32,11 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
     private var _filteredItemsState = MutableStateFlow(getFilteredItems)
     val filteredItemsState: StateFlow<List<CoffeeInfo>> = _filteredItemsState
 
-    val checkItems = getFilteredItems.isNotEmpty()
+    private var _checkItems = MutableStateFlow(_filteredItemsState.value.isNotEmpty())
+    val checkItems: StateFlow<Boolean> = _checkItems
 
-    private val _columnCount = if (checkItems) 2 else 1
-    val columnCount: Int = _columnCount
+    private val _columnCount = MutableStateFlow(if (_checkItems.value) 2 else 1)
+    val columnCount: StateFlow<Int> = _columnCount
 
     fun dynamicTopAppBarHeight(state: LazyGridState) {
         TOP_APP_BAR_HEIGHT = if (state.firstVisibleItemIndex > 2)
@@ -49,6 +48,8 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
     fun updateTextFieldValue(newValue: String) {
         _textFieldState.value = newValue
         updateFilteredItems()
+        _checkItems.value = _filteredItemsState.value.isNotEmpty()
+        _columnCount.value = if (_checkItems.value) 2 else 1
     }
 
     private fun updateFilteredItems() {

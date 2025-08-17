@@ -34,16 +34,21 @@ fun LazyProductList(
 
     val filteredItems by viewModel.filteredItemsState.collectAsState()
 
+    val checkItems by viewModel.checkItems.collectAsState()
+
+    val columnCount by viewModel.columnCount.collectAsState()
+
     LazyVerticalGrid(
         modifier = Modifier
             .padding(top = padding)
             .background(White),
         state = lazyGridState,
-        columns = GridCells.Fixed(viewModel.columnCount),
+        columns = GridCells.Fixed(columnCount),
+        userScrollEnabled = filteredItems.size > 2,
         overscrollEffect = null
     ) {
 
-        if (viewModel.checkItems) {
+        if (checkItems) {
             items(count = 2) { Spacer(Modifier.height(25.dp)) }
 
             items(
@@ -55,12 +60,11 @@ fun LazyProductList(
                     index = it
                 )
             }
-        } else {
-            item {
-                NoProductFound()
-            }
-        }
 
+            if (filteredItems.size < 5)
+                items(count = 2) { Spacer(modifier = Modifier.height(150.dp)) }
+
+        } else item { NoProductFound() }
     }
 
 }

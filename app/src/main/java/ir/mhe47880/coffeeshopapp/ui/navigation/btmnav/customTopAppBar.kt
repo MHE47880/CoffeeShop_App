@@ -22,10 +22,13 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -55,6 +58,8 @@ fun CustomTopAppBar(
     val topAppBarHeight by viewModel.topAppBarHeight.collectAsState()
 
     val textFieldState by viewModel.textFieldValue.collectAsState()
+
+    var isFocused by remember { mutableStateOf(false) }
 
     viewModel.dynamicTopAppBarHeight(state = lazyGridState)
 
@@ -112,7 +117,11 @@ fun CustomTopAppBar(
                     contentAlignment = Alignment.Center
                 ) {
                     TextField(
-                        modifier = Modifier.width(275.dp),
+                        modifier = Modifier
+                            .width(275.dp)
+                            .onFocusChanged { focusState ->
+                                isFocused = focusState.isFocused
+                            },
                         value = textFieldState,
                         onValueChange = {
                             if (it.length <= 17) {
@@ -145,7 +154,8 @@ fun CustomTopAppBar(
                             focusedIndicatorColor = Color.Transparent,
                             unfocusedIndicatorColor = Color.Transparent,
                             focusedTextColor = White,
-                            unfocusedTextColor = White
+                            unfocusedTextColor = White,
+                            cursorColor = if (isFocused) White else Color.Transparent
                         )
                     )
                 }

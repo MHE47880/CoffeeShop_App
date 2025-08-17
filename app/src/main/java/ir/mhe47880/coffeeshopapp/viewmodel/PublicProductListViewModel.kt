@@ -30,6 +30,7 @@ class PublicProductListViewModel @Inject constructor() : ViewModel() {
     fun addToShoppingCartProductList(item: CoffeeInfo) =
         getShoppingCartProductList().add(item)
 
+    //TODO Add this feature
     fun removeFromShoppingCartProductList(item: CoffeeInfo) =
         getShoppingCartProductList().remove(item)
 
