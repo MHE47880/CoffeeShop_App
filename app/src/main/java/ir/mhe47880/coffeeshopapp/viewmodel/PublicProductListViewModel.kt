@@ -11,18 +11,22 @@ import javax.inject.Inject
 @HiltViewModel
 class PublicProductListViewModel @Inject constructor() : ViewModel() {
 
-    private val deliveryFee = 1.0
+    val deliveryFee = "2.0"
+
+    val deliveryDiscount = 1.0
+
+    val deliveryFeeForShown = deliveryFee.toDouble() - deliveryDiscount
 
     private var _totalPrice = MutableStateFlow(
         getShoppingCartProductList().sumOf {
             it.price.toDouble() * it.count
-        } + deliveryFee
+        } + deliveryFee.toDouble()
     )
     val totalPrice: StateFlow<Double> = _totalPrice
 
     fun updateTotalPrice() {
         _totalPrice.value =
-            getShoppingCartProductList().sumOf { it.price.toDouble() * it.count } + deliveryFee
+            getShoppingCartProductList().sumOf { it.price.toDouble() * it.count } + deliveryFee.toDouble()
     }
 
     fun getShoppingCartProductList() = shoppingCartProductList

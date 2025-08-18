@@ -1,7 +1,9 @@
 package ir.mhe47880.coffeeshopapp.ui.navigation.btmnav.screens
 
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.LocalOverscrollFactory
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -32,6 +35,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -50,56 +54,65 @@ import java.util.Locale
 @Composable
 fun ShoppingCartScreen(viewModel: PublicProductListViewModel = hiltViewModel()) {
 
-    if (viewModel.getShoppingCartProductList().size > 0) {
-        val totalPrice by viewModel.totalPrice.collectAsState()
+    CompositionLocalProvider(
+        LocalOverscrollFactory provides null
+    ) {
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(White)
-                .verticalScroll(rememberScrollState())
-        ) {
-            Box(
+        if (viewModel.getShoppingCartProductList().size > 0) {
+
+            val totalPrice by viewModel.totalPrice.collectAsState()
+
+            val onBackPressed = LocalOnBackPressedDispatcherOwner.current
+
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxSize()
                     .background(White)
-                    .padding(8.dp)
-                    .height(40.dp)
+                    .verticalScroll(rememberScrollState())
             ) {
-
                 Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.CenterStart
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(White)
+                        .padding(8.dp)
+                        .height(40.dp)
                 ) {
-                    IconButton({}) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_back_arrow),
-                            contentDescription = null
+
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.CenterStart
+                    ) {
+                        IconButton(
+                            onClick = {
+                                onBackPressed?.onBackPressedDispatcher?.onBackPressed()
+                            }
+                        ) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_back_arrow),
+                                contentDescription = null
+                            )
+                        }
+                    }
+
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = stringResource(R.string.order),
+                            style = TextStyle(
+                                color = BlackDarkest,
+                                fontSize = 16.sp,
+                                fontFamily = soraFont,
+                                fontWeight = FontWeight.SemiBold
+                            )
                         )
                     }
+
                 }
 
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = stringResource(R.string.order),
-                        style = TextStyle(
-                            color = BlackDarkest,
-                            fontSize = 16.sp,
-                            fontFamily = soraFont,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    )
-                }
+                Column {
 
-            }
-
-            Column {
-                CompositionLocalProvider(
-                    LocalOverscrollFactory provides null
-                ) {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -164,125 +177,148 @@ fun ShoppingCartScreen(viewModel: PublicProductListViewModel = hiltViewModel()) 
                         LazyShoppingCartProductList()
 
                     }
-                }
 
-                HorizontalDivider(
-                    modifier = Modifier.fillMaxWidth(),
-                    thickness = 4.dp,
-                    color = LightCream
-                )
-
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(White)
-                ) {
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp),
-                        text = stringResource(R.string.payment_summary),
-                        style = TextStyle(
-                            color = BlackDarkest,
-                            fontFamily = soraFont,
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.SemiBold
-                        )
+                    HorizontalDivider(
+                        modifier = Modifier.fillMaxWidth(),
+                        thickness = 4.dp,
+                        color = LightCream
                     )
 
-                    Column {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 16.dp, vertical = 8.dp)
-                        ) {
-                            Text(
-                                text = stringResource(R.string.total_price),
-                                style = TextStyle(
-                                    color = BlackDarkest,
-                                    fontFamily = soraFont,
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.Normal
-                                )
-                            )
-
-                            Text(
-                                modifier = Modifier.fillMaxWidth(),
-                                text = "$ " + String.format(
-                                    locale = Locale.US,
-                                    format = "%.2f",
-                                    totalPrice
-                                ),
-                                style = TextStyle(
-                                    color = BlackDarkest,
-                                    fontFamily = soraFont,
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.SemiBold,
-                                    textAlign = TextAlign.End
-                                )
-                            )
-                        }
-
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 16.dp)
-                        ) {
-                            Text(
-                                text = stringResource(R.string.delivery_fee),
-                                style = TextStyle(
-                                    color = BlackDarkest,
-                                    fontFamily = soraFont,
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.Normal
-                                )
-                            )
-
-                            Text(
-                                modifier = Modifier.fillMaxWidth(),
-                                text = "$ 1.00",
-                                style = TextStyle(
-                                    color = BlackDarkest,
-                                    fontFamily = soraFont,
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.SemiBold,
-                                    textAlign = TextAlign.End
-                                )
-                            )
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(24.dp))
-
-                    Button(
+                    Column(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .height(50.dp)
-                            .padding(horizontal = 16.dp),
-                        colors = ButtonDefaults.buttonColors(CreamyBrown),
-                        shape = RoundedCornerShape(18.dp),
-                        onClick = {}
+                            .fillMaxSize()
+                            .background(White)
                     ) {
                         Text(
-                            text = stringResource(R.string.order),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
+                            text = stringResource(R.string.payment_summary),
                             style = TextStyle(
-                                color = White,
+                                color = BlackDarkest,
                                 fontFamily = soraFont,
-                                fontSize = 18.sp,
+                                fontSize = 20.sp,
                                 fontWeight = FontWeight.SemiBold
                             )
                         )
+
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalArrangement = Arrangement.Center
+                        ) {
+
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 16.dp)
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.delivery_fee),
+                                    style = TextStyle(
+                                        color = BlackDarkest,
+                                        fontFamily = soraFont,
+                                        fontSize = 18.sp,
+                                        fontWeight = FontWeight.Normal
+                                    )
+                                )
+
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.End,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        text = "$ ${viewModel.deliveryFee}",
+                                        style = TextStyle(
+                                            color = BlackDarkest,
+                                            fontFamily = soraFont,
+                                            fontSize = 18.sp,
+                                            fontWeight = FontWeight.Normal,
+                                            textDecoration = TextDecoration.LineThrough
+                                        )
+                                    )
+
+                                    Spacer(modifier = Modifier.width(8.dp))
+
+                                    Text(
+                                        text = "$ ${viewModel.deliveryFeeForShown}",
+                                        style = TextStyle(
+                                            color = BlackDarkest,
+                                            fontFamily = soraFont,
+                                            fontSize = 18.sp,
+                                            fontWeight = FontWeight.SemiBold
+                                        )
+                                    )
+                                }
+                            }
+
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.total_price),
+                                    style = TextStyle(
+                                        color = BlackDarkest,
+                                        fontFamily = soraFont,
+                                        fontSize = 18.sp,
+                                        fontWeight = FontWeight.Normal
+                                    )
+                                )
+
+                                Text(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    text = "$ " + String.format(
+                                        locale = Locale.US,
+                                        format = "%.2f",
+                                        totalPrice
+                                    ),
+                                    style = TextStyle(
+                                        color = BlackDarkest,
+                                        fontFamily = soraFont,
+                                        fontSize = 18.sp,
+                                        fontWeight = FontWeight.SemiBold,
+                                        textAlign = TextAlign.End
+                                    )
+                                )
+                            }
+
+                        }
+
+                        Spacer(modifier = Modifier.height(24.dp))
+
+                        Button(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(50.dp)
+                                .padding(horizontal = 16.dp),
+                            colors = ButtonDefaults.buttonColors(CreamyBrown),
+                            shape = RoundedCornerShape(12.dp),
+                            onClick = {}
+                        ) {
+                            Text(
+                                text = stringResource(R.string.order),
+                                style = TextStyle(
+                                    color = White,
+                                    fontFamily = soraFont,
+                                    fontSize = 18.sp,
+                                    fontWeight = FontWeight.SemiBold
+                                )
+                            )
+                        }
                     }
                 }
             }
-        }
-    } else
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(White)
-        ) {
-            NoProductFound()
-        }
-}
+        } else
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(White)
+            ) {
+                NoProductFound()
+            }
 
+    }
+
+}
