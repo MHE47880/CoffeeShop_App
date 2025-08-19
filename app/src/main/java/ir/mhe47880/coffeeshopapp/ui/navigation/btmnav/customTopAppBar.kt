@@ -40,8 +40,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ir.mhe47880.coffeeshopapp.R
 import ir.mhe47880.coffeeshopapp.ui.navigation.btmnav.screens.utils.isScrolled
-import ir.mhe47880.coffeeshopapp.ui.theme.Black_Dark
-import ir.mhe47880.coffeeshopapp.ui.theme.Black_Gray
+import ir.mhe47880.coffeeshopapp.ui.theme.BlackDark
+import ir.mhe47880.coffeeshopapp.ui.theme.BlackGray
 import ir.mhe47880.coffeeshopapp.ui.theme.Dark_Gray
 import ir.mhe47880.coffeeshopapp.ui.theme.LightGray
 import ir.mhe47880.coffeeshopapp.ui.theme.White
@@ -80,8 +80,8 @@ fun CustomTopAppBar(
                 .background(
                     Brush.linearGradient(
                         colors = listOf(
-                            Black_Gray,
-                            Black_Dark
+                            BlackGray,
+                            BlackDark
                         ),
                         start = Offset(0f, 1000f),
                         end = Offset(1000f, 0f)
@@ -109,7 +109,7 @@ fun CustomTopAppBar(
                         .background(
                             Brush.linearGradient(
                                 colors = listOf(
-                                    Black_Dark,
+                                    BlackDark,
                                     Dark_Gray,
                                 )
                             )

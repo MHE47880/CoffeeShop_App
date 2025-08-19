@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import ir.mhe47880.coffeeshopapp.ui.navigation.btmnav.screens.BottomNavScreens
+import ir.mhe47880.coffeeshopapp.ui.theme.BlackDarkest
 import ir.mhe47880.coffeeshopapp.ui.theme.CreamyBrown
 import ir.mhe47880.coffeeshopapp.ui.theme.White
 
@@ -58,7 +59,8 @@ fun CustomBottomNav(
                 ) {
                     Icon(
                         painter = painterResource(screen.icon),
-                        contentDescription = screen.route
+                        contentDescription = screen.route,
+                        tint = BlackDarkest
                     )
                 }
 

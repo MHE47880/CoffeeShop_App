@@ -64,54 +64,59 @@ fun ShoppingCartScreen(viewModel: PublicProductListViewModel = hiltViewModel()) 
 
             val onBackPressed = LocalOnBackPressedDispatcherOwner.current
 
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(White)
-                    .verticalScroll(rememberScrollState())
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(White)
-                        .padding(8.dp)
-                        .height(40.dp)
+            Column {
+                Column(
+                    modifier = Modifier.fillMaxWidth()
                 ) {
-
                     Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.CenterStart
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(White)
+                            .padding(8.dp)
+                            .height(40.dp)
                     ) {
-                        IconButton(
-                            onClick = {
-                                onBackPressed?.onBackPressedDispatcher?.onBackPressed()
-                            }
+
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.CenterStart
                         ) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_back_arrow),
-                                contentDescription = null
+                            IconButton(
+                                onClick = {
+                                    onBackPressed?.onBackPressedDispatcher?.onBackPressed()
+                                }
+                            ) {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_back_arrow),
+                                    contentDescription = null,
+                                    tint = BlackDarkest
+                                )
+                            }
+                        }
+
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = stringResource(R.string.order),
+                                style = TextStyle(
+                                    color = BlackDarkest,
+                                    fontSize = 16.sp,
+                                    fontFamily = soraFont,
+                                    fontWeight = FontWeight.SemiBold
+                                )
                             )
                         }
-                    }
 
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = stringResource(R.string.order),
-                            style = TextStyle(
-                                color = BlackDarkest,
-                                fontSize = 16.sp,
-                                fontFamily = soraFont,
-                                fontWeight = FontWeight.SemiBold
-                            )
-                        )
                     }
-
                 }
 
-                Column {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(White)
+                        .verticalScroll(rememberScrollState())
+                ) {
 
                     Column(
                         modifier = Modifier
@@ -310,6 +315,7 @@ fun ShoppingCartScreen(viewModel: PublicProductListViewModel = hiltViewModel()) 
                     }
                 }
             }
+
         } else
             Box(
                 modifier = Modifier
@@ -318,7 +324,6 @@ fun ShoppingCartScreen(viewModel: PublicProductListViewModel = hiltViewModel()) 
             ) {
                 NoProductFound()
             }
-
     }
 
 }
