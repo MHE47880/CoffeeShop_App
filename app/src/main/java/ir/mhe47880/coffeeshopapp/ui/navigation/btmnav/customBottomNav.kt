@@ -51,16 +51,24 @@ fun CustomBottomNav(
             ) {
                 IconButton(
                     onClick = {
-                        navController.navigate(screen.route) {
-                            popUpTo(navController.graph.startDestinationId)
-                            launchSingleTop = true
-                        }
+                        if (screen.route != currentScreen?.destination?.route)
+                            navController.navigate(screen.route) {
+                                popUpTo(navController.graph.startDestinationId){
+                                    inclusive = false
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
                     }
                 ) {
                     Icon(
                         painter = painterResource(screen.icon),
                         contentDescription = screen.route,
-                        tint = BlackDarkest
+                        tint =
+                            if (screen.route == currentScreen?.destination?.route)
+                                CreamyBrown
+                            else
+                                BlackDarkest
                     )
                 }
 
