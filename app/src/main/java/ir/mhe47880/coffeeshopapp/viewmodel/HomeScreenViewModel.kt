@@ -1,62 +1,72 @@
 package ir.mhe47880.coffeeshopapp.viewmodel
 
 import androidx.compose.foundation.lazy.grid.LazyGridState
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ir.mhe47880.coffeeshopapp.model.local.CoffeeInfo
-import ir.mhe47880.coffeeshopapp.model.local.utils.FakeCoffeeData
+import ir.mhe47880.coffeeshopapp.model.local.HomeScreenState
+import ir.mhe47880.coffeeshopapp.repository.HomeScreenRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeScreenViewModel @Inject constructor() : ViewModel() {
+class HomeScreenViewModel @Inject constructor(
+    private val repository: HomeScreenRepository
+) : ViewModel() {
 
-    companion object {
-        var TOP_APP_BAR_HEIGHT = 270.dp
+    companion object { val TOP_APP_BAR_HEIGHT = 270.dp }
+
+    private val _uiState = MutableStateFlow(HomeScreenState())
+    val uiState: StateFlow<HomeScreenState> = _uiState
+
+    init {
+        fetchCoffeeData()
     }
 
-    private val _topAppBarHeight = MutableStateFlow(TOP_APP_BAR_HEIGHT)
-    val topAppBarHeight: StateFlow<Dp> = _topAppBarHeight
-
-    private var _textFieldState = MutableStateFlow("")
-    val textFieldValue: StateFlow<String> = _textFieldState
-
-    private val getFilteredItems =
-        FakeCoffeeData.coffeeDataList.filter {
-            it.name.trim().lowercase().contains(textFieldValue.value.trim().lowercase())
+    private fun fetchCoffeeData() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val coffeeList = repository.getCoffeeList()
+            updateState {
+                copy(
+                    coffeeList = coffeeList,
+                    isEmpty = coffeeList.isEmpty(),
+                    columnCount = if (coffeeList.isNotEmpty()) 2 else 1
+                )
+            }
         }
-
-    private var _filteredItemsState = MutableStateFlow(getFilteredItems)
-    val filteredItemsState: StateFlow<List<CoffeeInfo>> = _filteredItemsState
-
-    private var _checkItems = MutableStateFlow(_filteredItemsState.value.isNotEmpty())
-    val checkItems: StateFlow<Boolean> = _checkItems
-
-    private val _columnCount = MutableStateFlow(if (_checkItems.value) 2 else 1)
-    val columnCount: StateFlow<Int> = _columnCount
+    }
 
     fun dynamicTopAppBarHeight(state: LazyGridState) {
-        TOP_APP_BAR_HEIGHT = if (state.firstVisibleItemIndex > 2)
-            0.dp
-        else
-            270.dp
+        updateState {
+            copy(topAppBarHeight = if (state.firstVisibleItemIndex > 2) 0.dp else 270.dp)
+        }
     }
 
     fun updateTextFieldValue(newValue: String) {
-        _textFieldState.value = newValue
-        updateFilteredItems()
-        _checkItems.value = _filteredItemsState.value.isNotEmpty()
-        _columnCount.value = if (_checkItems.value) 2 else 1
+        updateState { copy(searchText = newValue) }
+        filterItems(newValue)
     }
 
-    private fun updateFilteredItems() {
-        _filteredItemsState.value =
-            FakeCoffeeData.coffeeDataList.filter {
-                it.name.trim().lowercase().contains(textFieldValue.value.trim().lowercase())
+    private fun filterItems(query: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val filtered = repository.getCoffeeList().filter {
+                it.name.trim().lowercase().contains(query.trim().lowercase())
             }
+            updateState {
+                copy(
+                    coffeeList = filtered,
+                    isEmpty = filtered.isEmpty(),
+                    columnCount = if (filtered.isNotEmpty()) 2 else 1
+                )
+            }
+        }
     }
 
+    private fun updateState(reducer: HomeScreenState.() -> HomeScreenState) {
+        _uiState.value = _uiState.value.reducer()
+    }
 }

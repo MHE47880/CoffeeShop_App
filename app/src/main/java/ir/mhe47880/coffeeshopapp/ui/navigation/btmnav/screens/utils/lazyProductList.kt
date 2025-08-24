@@ -18,7 +18,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import ir.mhe47880.coffeeshopapp.model.local.utils.FakeCoffeeData
 import ir.mhe47880.coffeeshopapp.ui.theme.White
 import ir.mhe47880.coffeeshopapp.viewmodel.HomeScreenViewModel
-import ir.mhe47880.coffeeshopapp.viewmodel.HomeScreenViewModel.Companion.TOP_APP_BAR_HEIGHT
 
 @Composable
 fun LazyProductList(
@@ -26,42 +25,38 @@ fun LazyProductList(
     viewModel: HomeScreenViewModel = hiltViewModel()
 ) {
 
+    val state by viewModel.uiState.collectAsState()
+
     val padding by animateDpAsState(
         targetValue =
-            if (lazyGridState.isScrolled) 0.dp else TOP_APP_BAR_HEIGHT,
+            if (lazyGridState.isScrolled) 0.dp else state.topAppBarHeight,
         animationSpec = tween(durationMillis = 400)
     )
-
-    val filteredItems by viewModel.filteredItemsState.collectAsState()
-
-    val checkItems by viewModel.checkItems.collectAsState()
-
-    val columnCount by viewModel.columnCount.collectAsState()
 
     LazyVerticalGrid(
         modifier = Modifier
             .padding(top = padding)
             .background(White),
         state = lazyGridState,
-        columns = GridCells.Fixed(columnCount),
-        userScrollEnabled = filteredItems.size > 2,
+        columns = GridCells.Fixed(state.columnCount),
+        userScrollEnabled = state.coffeeList.size > 2,
         overscrollEffect = null
     ) {
 
-        if (checkItems) {
+        if (!state.isEmpty) {
             items(count = 2) { Spacer(Modifier.height(25.dp)) }
 
             items(
-                count = filteredItems.size,
+                count = state.coffeeList.size,
                 key = { index -> FakeCoffeeData.coffeeDataList[index].id }
             ) {
                 ProductCard(
-                    productList = filteredItems,
+                    productList = state.coffeeList,
                     index = it
                 )
             }
 
-            if (filteredItems.size < 5)
+            if (state.coffeeList.size < 5)
                 items(count = 2) { Spacer(modifier = Modifier.height(150.dp)) }
 
         } else item { NoProductFound() }

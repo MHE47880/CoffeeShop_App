@@ -55,9 +55,7 @@ fun CustomTopAppBar(
     viewModel: HomeScreenViewModel = hiltViewModel()
 ) {
 
-    val topAppBarHeight by viewModel.topAppBarHeight.collectAsState()
-
-    val textFieldState by viewModel.textFieldValue.collectAsState()
+    val state by viewModel.uiState.collectAsState()
 
     var isFocused by remember { mutableStateOf(false) }
 
@@ -68,7 +66,7 @@ fun CustomTopAppBar(
             .fillMaxWidth()
             .background(White)
             .animateContentSize(animationSpec = tween(durationMillis = 400))
-            .height(height = if (lazyGridState.isScrolled) topAppBarHeight else TOP_APP_BAR_HEIGHT)
+            .height(height = if (lazyGridState.isScrolled) state.topAppBarHeight else TOP_APP_BAR_HEIGHT)
     ) {
 
         //Background Gradiant
@@ -122,7 +120,7 @@ fun CustomTopAppBar(
                             .onFocusChanged { focusState ->
                                 isFocused = focusState.isFocused
                             },
-                        value = textFieldState,
+                        value = state.searchText,
                         onValueChange = {
                             if (it.length <= 17) {
                                 viewModel.updateTextFieldValue(it)
