@@ -1,11 +1,12 @@
 package ir.mhe47880.coffeeshopapp.viewmodel
 
 import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ir.mhe47880.coffeeshopapp.model.local.HomeScreenState
+import ir.mhe47880.coffeeshopapp.model.local.CoffeeInfo
 import ir.mhe47880.coffeeshopapp.repository.HomeScreenRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,12 +14,22 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+data class HomeScreenState(
+    val topAppBarHeight: Dp = 270.dp,
+    val searchText: String = "",
+    val coffeeList: List<CoffeeInfo> = emptyList(),
+    val isEmpty: Boolean = false,
+    val columnCount: Int = 2
+)
+
 @HiltViewModel
 class HomeScreenViewModel @Inject constructor(
     private val repository: HomeScreenRepository
 ) : ViewModel() {
 
-    companion object { val TOP_APP_BAR_HEIGHT = 270.dp }
+    companion object {
+        val TOP_APP_BAR_HEIGHT = 270.dp
+    }
 
     private val _uiState = MutableStateFlow(HomeScreenState())
     val uiState: StateFlow<HomeScreenState> = _uiState
