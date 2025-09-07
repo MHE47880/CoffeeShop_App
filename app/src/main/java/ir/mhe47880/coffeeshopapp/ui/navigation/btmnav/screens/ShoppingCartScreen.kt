@@ -58,7 +58,7 @@ fun ShoppingCartScreen(viewModel: PublicProductListViewModel = hiltViewModel()) 
         LocalOverscrollFactory provides null
     ) {
 
-        if (viewModel.getShoppingCartProductList().size > 0) {
+        if (viewModel.getShoppingCartProductList().isNotEmpty()) {
 
             val totalPrice by viewModel.totalPrice.collectAsState()
 

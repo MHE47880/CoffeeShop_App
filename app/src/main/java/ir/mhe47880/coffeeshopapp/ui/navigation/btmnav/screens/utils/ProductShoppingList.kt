@@ -139,12 +139,17 @@ fun ProductShoppingList(
             Icon(
                 modifier = Modifier
                     .clip(CircleShape)
-                    .clickable {
-                        viewModel.increaseCount(itemsList[index])
-                        countState++
-                        viewModel.updateTotalPrice()
-                    },
-                painter = painterResource(R.drawable.ic_plus_2_enable),
+                    .clickable(
+                        enabled = countState < 10,
+                        onClick = {
+                            viewModel.increaseCount(itemsList[index])
+                            countState++
+                            viewModel.updateTotalPrice()
+                        }
+                    ),
+                painter = painterResource(
+                    if (countState != 10) R.drawable.ic_plus_2_enable else R.drawable.ic_plus_2_disable
+                ),
                 contentDescription = null,
                 tint = Color.Unspecified,
             )
