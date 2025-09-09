@@ -4,7 +4,7 @@ import androidx.annotation.DrawableRes
 
 data class CoffeeInfo(
     val id: Int,
-    @DrawableRes val imageAddress: Int,
+    @param:DrawableRes val imageAddress: Int,
     val name: String,
     val description: String,
     val price: String,

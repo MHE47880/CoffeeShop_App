@@ -140,8 +140,8 @@ fun WelcomeScreen(navController: NavHostController) {
                         colors = ButtonDefaults.buttonColors(containerColor = CreamyBrown),
                         shape = RoundedCornerShape(18.dp),
                         onClick = {
-                            navController.navigate(Screens.MainScreen.route){
-                                popUpTo(Screens.WelcomeScreen.route){
+                            navController.navigate(Screens.MainScreen){
+                                popUpTo(Screens.WelcomeScreen){
                                     inclusive = true
                                 }
                             }
