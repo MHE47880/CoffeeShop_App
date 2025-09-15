@@ -37,7 +37,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import ir.mhe47880.coffeeshopapp.R
 import ir.mhe47880.coffeeshopapp.ui.navigation.btmnav.screens.utils.isScrolled
 import ir.mhe47880.coffeeshopapp.ui.theme.BlackDark

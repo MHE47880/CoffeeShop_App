@@ -17,7 +17,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -31,7 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import ir.mhe47880.coffeeshopapp.R
 import ir.mhe47880.coffeeshopapp.ui.theme.BlackDarkest
 import ir.mhe47880.coffeeshopapp.ui.theme.LightGray
@@ -44,9 +43,9 @@ fun ProductShoppingList(
     viewModel: PublicProductListViewModel = hiltViewModel()
 ) {
 
-    val itemsList = viewModel.getShoppingCartProductList()
+    val itemsList = viewModel.getShoppingCartProductList
 
-    var countState by remember { mutableIntStateOf(viewModel.getShoppingCartProductList()[index].count) }
+    var countState by remember { viewModel.getCountState(index = index) }
 
     Row(
         modifier = Modifier

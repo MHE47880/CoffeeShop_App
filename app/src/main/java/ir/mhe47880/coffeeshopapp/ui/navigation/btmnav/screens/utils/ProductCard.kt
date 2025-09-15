@@ -29,7 +29,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import ir.mhe47880.coffeeshopapp.R
 import ir.mhe47880.coffeeshopapp.model.local.CoffeeInfo
 import ir.mhe47880.coffeeshopapp.ui.theme.BlackDarkest
@@ -169,7 +169,7 @@ fun ProductCard(
 
                     Icon(
                         modifier = Modifier.clickable {
-                            if (viewModel.getShoppingCartProductList().contains(productList[index]))
+                            if (viewModel.getShoppingCartProductList.contains(productList[index]))
                                 viewModel.increaseCount(productList[index])
                             else {
                                 viewModel.increaseCount(productList[index])

@@ -6,21 +6,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import ir.mhe47880.coffeeshopapp.viewmodel.PublicProductListViewModel
 
 @Composable
 fun LazyShoppingCartProductList(
     viewModel: PublicProductListViewModel = hiltViewModel()
 ) {
-    Column (
+    Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp),
 
-    ) {
+        ) {
 
-        for (i in 0..viewModel.getShoppingCartProductList().lastIndex){
+        for (i in 0..viewModel.getShoppingCartProductList.lastIndex) {
             ProductShoppingList(index = i)
         }
 
