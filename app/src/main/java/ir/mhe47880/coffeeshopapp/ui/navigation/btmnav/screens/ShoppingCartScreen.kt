@@ -25,6 +25,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
@@ -78,6 +79,10 @@ fun ShoppingCartScreen(
 
         val scope = rememberCoroutineScope()
 
+        var showModal by remember { mutableStateOf(false) }
+
+        val modalState = rememberModalBottomSheetState()
+
         val composition by rememberLottieComposition(
             LottieCompositionSpec.RawRes(R.raw.success)
         )
@@ -85,13 +90,12 @@ fun ShoppingCartScreen(
         val progress by animateLottieCompositionAsState(
             composition = composition,
             iterations = 1,
-            isPlaying = true
+            isPlaying = modalState.isVisible
         )
-
-        var showModal by remember { mutableStateOf(false) }
 
         if (showModal)
             ModalBottomSheet(
+                sheetState = modalState,
                 containerColor = White,
                 onDismissRequest = { showModal = false }
             ) {
@@ -374,7 +378,7 @@ fun ShoppingCartScreen(
                                 showModal = true
                                 viewModel.clearShoppingCartProductList()
                                 scope.launch(Dispatchers.Main) {
-                                    delay(1000)
+                                    delay(1300)
                                     navController.navigate(BottomNavScreens.HomeScreen)
                                 }
                             }
