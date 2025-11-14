@@ -1,5 +1,6 @@
 package ir.mhe47880.coffeeshopapp.ui.navigation.btmnav.screens.utils
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -167,14 +169,21 @@ fun ProductCard(
                     contentAlignment = Alignment.CenterEnd
                 ) {
 
+                    val context = LocalContext.current
+
                     Icon(
                         modifier = Modifier.clickable {
-                            if (viewModel.getShoppingCartProductList.contains(productList[index]))
+                            if (viewModel.getShoppingCartProductList.contains(productList[index])) {
                                 viewModel.increaseCount(productList[index])
-                            else {
+                            } else {
                                 viewModel.increaseCount(productList[index])
                                 viewModel.addToShoppingCartProductList(productList[index])
                             }
+                            Toast.makeText(
+                                context,
+                                "${productList[index].name} added to shopping cart",
+                                Toast.LENGTH_LONG
+                            ).show()
                         },
                         painter = painterResource(R.drawable.ic_plus),
                         contentDescription = null,

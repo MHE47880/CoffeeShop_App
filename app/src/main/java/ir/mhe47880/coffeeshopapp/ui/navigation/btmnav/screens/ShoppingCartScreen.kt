@@ -60,6 +60,7 @@ import ir.mhe47880.coffeeshopapp.ui.theme.LightCream
 import ir.mhe47880.coffeeshopapp.ui.theme.LightestGray
 import ir.mhe47880.coffeeshopapp.ui.theme.White
 import ir.mhe47880.coffeeshopapp.ui.theme.soraFont
+import ir.mhe47880.coffeeshopapp.viewmodel.HomeScreenViewModel
 import ir.mhe47880.coffeeshopapp.viewmodel.PublicProductListViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -70,6 +71,7 @@ import java.util.Locale
 @Composable
 fun ShoppingCartScreen(
     viewModel: PublicProductListViewModel = hiltViewModel(),
+    utilViewModel: HomeScreenViewModel = hiltViewModel(),
     navController: NavHostController
 ) {
 
@@ -380,6 +382,8 @@ fun ShoppingCartScreen(
                                 scope.launch(Dispatchers.Main) {
                                     delay(1300)
                                     navController.navigate(BottomNavScreens.HomeScreen)
+                                    //todo bad code
+                                    utilViewModel.fetchCoffeeData()
                                 }
                             }
                         ) {

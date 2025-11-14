@@ -38,7 +38,7 @@ class HomeScreenViewModel @Inject constructor(
         fetchCoffeeData()
     }
 
-    private fun fetchCoffeeData() {
+    fun fetchCoffeeData() {
         viewModelScope.launch(Dispatchers.IO) {
             val coffeeList = repository.getCoffeeList()
             updateState {
